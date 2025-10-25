@@ -18,6 +18,13 @@ public class Ativo {
         return carteira;
     }
 
+    @ManyToOne
+    @JoinColumn(name = "carteira_id")
+    private Carteira carteira;
+
+
+    //Getters e Setters gerados automaticamente
+
     public void setCarteira(Carteira carteira) {
         this.carteira = carteira;
     }
@@ -46,9 +53,6 @@ public class Ativo {
         this.valor = valor;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "carteira_id")
-    private Carteira carteira;
-
-    // getters e setters
+    public void setCodigo(String codigo) {
+    }
 }

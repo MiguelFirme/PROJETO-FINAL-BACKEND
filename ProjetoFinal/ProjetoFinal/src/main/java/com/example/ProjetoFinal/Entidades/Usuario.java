@@ -17,6 +17,8 @@ public class Usuario implements Serializable {
     @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL)
     private Carteira carteira;
 
+
+    //Getters e Setters gerados automaticamente
     public UUID getId() {
         return id;
     }

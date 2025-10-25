@@ -16,8 +16,24 @@ public class Carteira {
 
     public UUID getId() {
         return id;
+    };
+
+    private String nome;
+
+    @OneToOne
+    @JoinColumn(name = "usuario_id")
+    private Usuario usuario;
+
+    @OneToMany(mappedBy = "carteira", cascade = CascadeType.ALL)
+    private List<Ativo> ativos;
+
+    public void adicionarAtivo(Ativo ativo) {
+        ativo.setCarteira(this);
+        ativos.add(ativo);
     }
 
+
+    //Getters e Setters gerados automaticamente
     public void setId(UUID id) {
         this.id = id;
     }
@@ -45,15 +61,5 @@ public class Carteira {
     public void setAtivos(List<Ativo> ativos) {
         this.ativos = ativos;
     }
-
-    private String nome;
-
-    @OneToOne
-    @JoinColumn(name = "usuario_id")
-    private Usuario usuario;
-
-    @OneToMany(mappedBy = "carteira", cascade = CascadeType.ALL)
-    private List<Ativo> ativos;
-
 
 }
