@@ -55,4 +55,7 @@ public class Ativo {
 
     public void setCodigo(String codigo) {
     }
+
+    public void setPrecoAtual(Double regularMarketPrice) {
+    }
 }

@@ -1,8 +1,8 @@
-package com.seuprojeto.service;
+package com.example.ProjetoFinal.Services;
 
-import com.seuprojeto.entity.Investimento;
-import com.seuprojeto.entity.Usuario;
-import com.seuprojeto.repository.InvestimentoRepository;
+import com.example.ProjetoFinal.Entidades.Investimento;
+import com.example.ProjetoFinal.Entidades.Usuario;
+import com.example.ProjetoFinal.Repositorys.InvestimentoRepository;
 import org.springframework.stereotype.Service;
 import java.util.List;
 

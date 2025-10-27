@@ -1,7 +1,8 @@
-package com.seuprojeto.repository;
+package com.example.ProjetoFinal.Repositorys;
 
-import com.seuprojeto.entity.Investimento;
-import com.seuprojeto.entity.Usuario;
+
+import com.example.ProjetoFinal.Entidades.Investimento;
+import com.example.ProjetoFinal.Entidades.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import java.util.List;

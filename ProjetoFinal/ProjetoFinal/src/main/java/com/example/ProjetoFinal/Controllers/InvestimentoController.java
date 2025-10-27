@@ -1,9 +1,9 @@
-package com.seuprojeto.controller;
+package com.example.ProjetoFinal.Controllers;
 
-import com.seuprojeto.entity.Investimento;
-import com.seuprojeto.entity.Usuario;
-import com.seuprojeto.service.InvestimentoService;
-import com.seuprojeto.service.UsuarioService;
+import com.example.ProjetoFinal.Entidades.Investimento;
+import com.example.ProjetoFinal.Entidades.Usuario;
+import com.example.ProjetoFinal.Services.InvestimentoService;
+import com.example.ProjetoFinal.Services.UsuarioService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;

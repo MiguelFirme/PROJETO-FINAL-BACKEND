@@ -1,7 +1,7 @@
-package com.seuprojeto.service;
+package com.example.ProjetoFinal.Services;
 
-import com.seuprojeto.entity.Usuario;
-import com.seuprojeto.repository.UsuarioRepository;
+import com.example.ProjetoFinal.Entidades.Usuario;
+import com.example.ProjetoFinal.Repositorys.UsuarioRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
