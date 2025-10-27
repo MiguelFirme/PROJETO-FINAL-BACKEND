@@ -1,11 +1,9 @@
 package com.example.ProjetoFinal.Entidades;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.util.List;
 import java.util.UUID;
-
-import com.example.ProjetoFinal.Entidades.Usuario;
-import com.example.ProjetoFinal.Entidades.Ativo;
 
 @Entity
 public class Carteira {
@@ -14,14 +12,11 @@ public class Carteira {
     @GeneratedValue( strategy = GenerationType.UUID)
     UUID id;
 
-    public UUID getId() {
-        return id;
-    };
-
     private String nome;
 
     @OneToOne
     @JoinColumn(name = "usuario_id")
+    @JsonIgnore
     private Usuario usuario;
 
     @OneToMany(mappedBy = "carteira", cascade = CascadeType.ALL)
@@ -32,8 +27,10 @@ public class Carteira {
         ativos.add(ativo);
     }
 
+    public UUID getId() {
+        return id;
+    };
 
-    //Getters e Setters gerados automaticamente
     public void setId(UUID id) {
         this.id = id;
     }

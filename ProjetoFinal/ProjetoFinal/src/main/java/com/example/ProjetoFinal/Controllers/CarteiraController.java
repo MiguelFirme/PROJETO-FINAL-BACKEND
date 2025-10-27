@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/carteiras")
@@ -24,26 +25,44 @@ public class CarteiraController {
     @Autowired
     private AtivoService ativoService;
 
-    // Adiciona um ativo (via código) à carteira do usuário
-    @PostMapping("/{idCarteira}/adicionar-ativo/{codigo}")
+    @PostMapping("/{idCarteira}/adicionar-ativo")
     public ResponseEntity<?> adicionarAtivo(
-            @PathVariable Long idCarteira,
-            @PathVariable String codigo) {
+            @PathVariable UUID idCarteira,
+            @RequestBody Map<String, String> requestBody) {
 
-        Carteira carteira = carteiraRepository.findById(idCarteira)
+        String codigo = requestBody.get("codigo");
+        if (codigo == null || codigo.isEmpty()) {
+            return ResponseEntity.badRequest().body("O campo 'codigo' é obrigatório.");
+        }
+
+        Carteira carteira = (Carteira) carteiraRepository.findById(idCarteira)
                 .orElseThrow(() -> new RuntimeException("Carteira não encontrada"));
 
-        // Busca informações reais da API externa
         Map<String, Object> dadosAtivo = ativoService.buscarAtivo(codigo);
 
-        // Cria o ativo com base nas informações da API
+        Object precoObj = dadosAtivo.get("regularMarketPrice");
+        if (precoObj == null) {
+            return ResponseEntity.status(500).body("Não foi possível obter o preço atual para o ativo: " + codigo);
+        }
+
+        Double precoAtual;
+        try {
+            if (precoObj instanceof Double) {
+                precoAtual = (Double) precoObj;
+            } else {
+                precoAtual = Double.valueOf(precoObj.toString());
+            }
+        } catch (NumberFormatException e) {
+            return ResponseEntity.status(500).body("Erro de formato de preço para o ativo: " + codigo);
+        }
+
         Ativo ativo = new Ativo();
         ativo.setCodigo(codigo);
-        ativo.setPrecoAtual(Double.valueOf(dadosAtivo.get("regularMarketPrice").toString()));
+        ativo.setPrecoAtual(precoAtual);
         ativo.setCarteira(carteira);
 
         ativoRepository.save(ativo);
 
-        return ResponseEntity.ok("Ativo " + codigo + " adicionado à carteira com sucesso!");
+        return ResponseEntity.ok("Ativo " + codigo + " adicionado à carteira com sucesso! Preço: " + String.format("%.2f", precoAtual));
     }
 }
