@@ -5,7 +5,7 @@ import com.example.ProjetoFinal.Repositorys.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import jakarta.persistence.EntityNotFoundException;
+import java.util.NoSuchElementException;
 import java.util.List;
 import java.util.UUID;
 
@@ -19,9 +19,9 @@ public class UsuarioService {
         return usuarioRepository.findAll();
     }
 
-    public Usuario buscarPorId(Long id) {
+    public Usuario buscarPorId(UUID id) {
         return usuarioRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Usuário com ID " + id + " não encontrado."));
+                .orElseThrow(() -> new NoSuchElementException("Usuário com ID " + id + " não encontrado."));
     }
 
     public Usuario salvar(Usuario usuario) {
@@ -29,6 +29,7 @@ public class UsuarioService {
     }
 
     public void deletar(UUID id) {
-        usuarioRepository.deleteById(id);
+        Usuario usuario = buscarPorId(id); // Carrega a entidade (e a carteira associada)
+        usuarioRepository.delete(usuario); // Deleta a entidade carregada, acionando o cascade
     }
 }

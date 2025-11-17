@@ -7,6 +7,7 @@ import com.example.ProjetoFinal.Services.UsuarioService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/investimentos")
@@ -26,13 +27,13 @@ public class InvestimentoController {
     }
 
     @GetMapping("/usuario/{idUsuario}")
-    public ResponseEntity<List<Investimento>> listarPorUsuario(@PathVariable Long idUsuario) {
+    public ResponseEntity<List<Investimento>> listarPorUsuario(@PathVariable UUID idUsuario) {
         Usuario usuario = usuarioService.buscarPorId(idUsuario);
         return ResponseEntity.ok(investimentoService.listarPorUsuario(usuario));
     }
 
     @PostMapping("/usuario/{idUsuario}")
-    public ResponseEntity<Investimento> criar(@PathVariable Long idUsuario, @RequestBody Investimento investimento) {
+    public ResponseEntity<Investimento> criar(@PathVariable UUID idUsuario, @RequestBody Investimento investimento) {
         Usuario usuario = usuarioService.buscarPorId(idUsuario);
         investimento.setUsuario(usuario);
         Investimento criado = investimentoService.salvar(investimento);
