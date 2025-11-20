@@ -9,8 +9,8 @@ import java.util.UUID;
 public class Usuario implements Serializable {
 
     @Id
-    @GeneratedValue( strategy = GenerationType.UUID)
-    UUID id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
 
     private String nome;
 
@@ -18,7 +18,8 @@ public class Usuario implements Serializable {
     private Carteira carteira;
 
 
-    //Getters e Setters gerados automaticamente
+
+    // Getters e setters
     public UUID getId() {
         return id;
     }

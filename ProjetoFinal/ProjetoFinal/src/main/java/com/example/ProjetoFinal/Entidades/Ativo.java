@@ -58,4 +58,8 @@ public class Ativo {
 
     public void setPrecoAtual(Double regularMarketPrice) {
     }
+
+    public void setValorInvestido(Double valorInvestido) {
+
+    }
 }

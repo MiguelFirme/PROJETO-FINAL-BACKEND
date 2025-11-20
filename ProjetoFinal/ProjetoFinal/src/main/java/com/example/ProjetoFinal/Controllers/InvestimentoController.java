@@ -1,11 +1,12 @@
 package com.example.ProjetoFinal.Controllers;
 
+import com.example.ProjetoFinal.Entidades.Carteira;
 import com.example.ProjetoFinal.Entidades.Investimento;
-import com.example.ProjetoFinal.Entidades.Usuario;
+import com.example.ProjetoFinal.Services.CarteiraService;
 import com.example.ProjetoFinal.Services.InvestimentoService;
-import com.example.ProjetoFinal.Services.UsuarioService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 import java.util.UUID;
 
@@ -14,29 +15,30 @@ import java.util.UUID;
 public class InvestimentoController {
 
     private final InvestimentoService investimentoService;
-    private final UsuarioService usuarioService;
+    private final CarteiraService carteiraService;
 
-    public InvestimentoController(InvestimentoService investimentoService, UsuarioService usuarioService) {
+    public InvestimentoController(InvestimentoService investimentoService, CarteiraService carteiraService) {
         this.investimentoService = investimentoService;
-        this.usuarioService = usuarioService;
+        this.carteiraService = carteiraService;
     }
 
-    @GetMapping
-    public ResponseEntity<List<Investimento>> listarTodos() {
-        return ResponseEntity.ok(investimentoService.listarTodos());
+    @GetMapping("/carteira/{idCarteira}")
+    public ResponseEntity<List<Investimento>> listarPorCarteira(@PathVariable UUID idCarteira) {
+        Carteira carteira = carteiraService.buscarPorId(idCarteira);
+        return ResponseEntity.ok(investimentoService.listarPorCarteira(carteira));
     }
 
-    @GetMapping("/usuario/{idUsuario}")
-    public ResponseEntity<List<Investimento>> listarPorUsuario(@PathVariable UUID idUsuario) {
-        Usuario usuario = usuarioService.buscarPorId(idUsuario);
-        return ResponseEntity.ok(investimentoService.listarPorUsuario(usuario));
-    }
+    @PostMapping("/carteira/{idCarteira}")
+    public ResponseEntity<Investimento> criar(
+            @PathVariable UUID idCarteira,
+            @RequestBody Investimento investimento) {
 
-    @PostMapping("/usuario/{idUsuario}")
-    public ResponseEntity<Investimento> criar(@PathVariable UUID idUsuario, @RequestBody Investimento investimento) {
-        Usuario usuario = usuarioService.buscarPorId(idUsuario);
-        investimento.setUsuario(usuario);
+        Carteira carteira = carteiraService.buscarPorId(idCarteira);
+
+        investimento.setCarteira(carteira);
+
         Investimento criado = investimentoService.salvar(investimento);
+
         return ResponseEntity.ok(criado);
     }
 

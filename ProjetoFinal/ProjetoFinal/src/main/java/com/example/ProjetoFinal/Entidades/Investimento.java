@@ -22,55 +22,31 @@ public class Investimento {
     private LocalDate dataAplicacao = LocalDate.now();
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "usuario_id", nullable = false)
-    private Usuario usuario;
+    @JoinColumn(name = "carteira_id", nullable = false)
+    private Carteira carteira;
 
     public Investimento() {}
 
-    public Investimento(String ativo, Double valorInvestido, Usuario usuario) {
+    public Investimento(String ativo, Double valorInvestido, Carteira carteira) {
         this.ativo = ativo;
         this.valorInvestido = valorInvestido;
-        this.usuario = usuario;
+        this.carteira = carteira;
         this.dataAplicacao = LocalDate.now();
     }
 
-    public Long getId() {
-        return id;
-    }
+    // Getters e Setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public String getAtivo() { return ativo; }
+    public void setAtivo(String ativo) { this.ativo = ativo; }
 
-    public String getAtivo() {
-        return ativo;
-    }
+    public Double getValorInvestido() { return valorInvestido; }
+    public void setValorInvestido(Double valorInvestido) { this.valorInvestido = valorInvestido; }
 
-    public void setAtivo(String ativo) {
-        this.ativo = ativo;
-    }
+    public LocalDate getDataAplicacao() { return dataAplicacao; }
+    public void setDataAplicacao(LocalDate dataAplicacao) { this.dataAplicacao = dataAplicacao; }
 
-    public Double getValorInvestido() {
-        return valorInvestido;
-    }
-
-    public void setValorInvestido(Double valorInvestido) {
-        this.valorInvestido = valorInvestido;
-    }
-
-    public LocalDate getDataAplicacao() {
-        return dataAplicacao;
-    }
-
-    public void setDataAplicacao(LocalDate dataAplicacao) {
-        this.dataAplicacao = dataAplicacao;
-    }
-
-    public Usuario getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
-    }
+    public Carteira getCarteira() { return carteira; }
+    public void setCarteira(Carteira carteira) { this.carteira = carteira; }
 }

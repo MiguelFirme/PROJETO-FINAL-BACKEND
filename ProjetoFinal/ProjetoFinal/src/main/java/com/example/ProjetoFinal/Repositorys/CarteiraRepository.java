@@ -8,4 +8,6 @@ import java.util.UUID;
 
 public interface CarteiraRepository extends JpaRepository<Carteira, Long> {
     Optional<Object> findById(UUID idCarteira);
+
+    void deleteById(UUID id);
 }

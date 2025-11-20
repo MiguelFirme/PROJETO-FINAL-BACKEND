@@ -1,9 +1,10 @@
 package com.example.ProjetoFinal.Services;
 
+import com.example.ProjetoFinal.Entidades.Carteira;
 import com.example.ProjetoFinal.Entidades.Investimento;
-import com.example.ProjetoFinal.Entidades.Usuario;
 import com.example.ProjetoFinal.Repositorys.InvestimentoRepository;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 @Service
@@ -19,8 +20,8 @@ public class InvestimentoService {
         return investimentoRepository.findAll();
     }
 
-    public List<Investimento> listarPorUsuario(Usuario usuario) {
-        return investimentoRepository.findByUsuario(usuario);
+    public List<Investimento> listarPorCarteira(Carteira carteira) {
+        return investimentoRepository.findByCarteira(carteira);
     }
 
     public Investimento salvar(Investimento investimento) {
