@@ -2,12 +2,12 @@ package com.example.ProjetoFinal.Repositorys;
 
 import com.example.ProjetoFinal.Entidades.Carteira;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 import java.util.UUID;
 
-public interface CarteiraRepository extends JpaRepository<Carteira, Long> {
-    Optional<Object> findById(UUID idCarteira);
-
-    void deleteById(UUID id);
+@Repository
+public interface CarteiraRepository extends JpaRepository<Carteira, UUID> {
+    Optional<Carteira> findByUsuarioId(UUID usuarioId);
 }

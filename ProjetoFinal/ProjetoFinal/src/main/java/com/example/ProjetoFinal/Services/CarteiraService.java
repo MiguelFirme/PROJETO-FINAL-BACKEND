@@ -15,8 +15,13 @@ public class CarteiraService {
         this.carteiraRepository = carteiraRepository;
     }
 
+    public Carteira buscarPorUsuarioId(UUID usuarioId) {
+        return carteiraRepository.findByUsuarioId(usuarioId)
+                .orElseThrow(() -> new RuntimeException("Carteira não encontrada para esse usuário."));
+    }
+
     public Carteira buscarPorId(UUID id) {
-        return (Carteira) carteiraRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Carteira não encontrada: " + id));
+        return carteiraRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Carteira não encontrada."));
     }
 }

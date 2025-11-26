@@ -1,52 +1,59 @@
 package com.example.ProjetoFinal.Entidades;
 
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 
 @Entity
-@Table(name = "investimentos")
 public class Investimento {
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "O nome do ativo é obrigatório.")
-    private String ativo;
 
-    @NotNull(message = "O valor investido é obrigatório.")
+    private String ticker; // ex: PETR4
     private Double valorInvestido;
+    private Integer dias; // tempo em dias
 
-    private LocalDate dataAplicacao = LocalDate.now();
+
+    private Double precoNoMomento;
+    private Double taxaEstimativa; // taxa diária estimada
+    private Double valorEstimadoFinal;
+    private Double rendimentoEstimado;
+
+
+    private LocalDateTime criadoEm = LocalDateTime.now();
+
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "carteira_id", nullable = false)
+    @JoinColumn(name = "carteira_id")
+    @JsonIgnore
     private Carteira carteira;
 
-    public Investimento() {}
 
-    public Investimento(String ativo, Double valorInvestido, Carteira carteira) {
-        this.ativo = ativo;
-        this.valorInvestido = valorInvestido;
-        this.carteira = carteira;
-        this.dataAplicacao = LocalDate.now();
-    }
-
-    // Getters e Setters
+    // Getters e setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
-
-    public String getAtivo() { return ativo; }
-    public void setAtivo(String ativo) { this.ativo = ativo; }
-
+    public String getTicker() { return ticker; }
+    public void setTicker(String ticker) { this.ticker = ticker; }
     public Double getValorInvestido() { return valorInvestido; }
     public void setValorInvestido(Double valorInvestido) { this.valorInvestido = valorInvestido; }
-
-    public LocalDate getDataAplicacao() { return dataAplicacao; }
-    public void setDataAplicacao(LocalDate dataAplicacao) { this.dataAplicacao = dataAplicacao; }
-
+    public Integer getDias() { return dias; }
+    public void setDias(Integer dias) { this.dias = dias; }
+    public Double getPrecoNoMomento() { return precoNoMomento; }
+    public void setPrecoNoMomento(Double precoNoMomento) { this.precoNoMomento = precoNoMomento; }
+    public Double getTaxaEstimativa() { return taxaEstimativa; }
+    public void setTaxaEstimativa(Double taxaEstimativa) { this.taxaEstimativa = taxaEstimativa; }
+    public Double getValorEstimadoFinal() { return valorEstimadoFinal; }
+    public void setValorEstimadoFinal(Double valorEstimadoFinal) { this.valorEstimadoFinal = valorEstimadoFinal; }
+    public Double getRendimentoEstimado() { return rendimentoEstimado; }
+    public void setRendimentoEstimado(Double rendimentoEstimado) { this.rendimentoEstimado = rendimentoEstimado; }
+    public LocalDateTime getCriadoEm() { return criadoEm; }
+    public void setCriadoEm(LocalDateTime criadoEm) { this.criadoEm = criadoEm; }
     public Carteira getCarteira() { return carteira; }
     public void setCarteira(Carteira carteira) { this.carteira = carteira; }
 }
