@@ -1,4 +1,3 @@
-FSInvest
 
 # 🪙 **FSInvest – API de Finanças e Investimentos**
 
