@@ -35,7 +35,6 @@ public class InvestimentoService {
     }
 
     public List<Investimento> listarPorUsuario(UUID usuarioId) {
-        // Não precisa de exceção aqui, pois uma lista vazia é um retorno válido.
         return investimentoRepository.findByCarteiraUsuarioId(usuarioId);
     }
 
@@ -79,7 +78,7 @@ public class InvestimentoService {
                     req.valor = valor;
                     req.dias = dias;
 
-                    // Validação básica do DTO
+                    // Validação de dados com DTO
                     if (ticker.isBlank() || valor <= 0 || dias <= 0) {
                         erros.add(String.format("Linha %d (%s): Dados inválidos. Ticker, valor e dias devem ser válidos.", totalRegistros, line));
                         continue;
@@ -159,7 +158,6 @@ public class InvestimentoService {
     }
 
     public List<Investimento> listarPorCarteira(UUID carteiraId) {
-        // Não precisa de exceção aqui, pois uma lista vazia é um retorno válido.
         return investimentoRepository.findByCarteiraId(carteiraId);
     }
 

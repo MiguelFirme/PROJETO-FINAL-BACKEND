@@ -15,13 +15,13 @@ public class Investimento {
     private Long id;
 
 
-    private String ticker; // ex: PETR4
+    private String ticker;
     private Double valorInvestido;
-    private Integer dias; // tempo em dias
+    private Integer dias;
 
 
     private Double precoNoMomento;
-    private Double taxaEstimativa; // taxa diária estimada
+    private Double taxaEstimativa;
     private Double valorEstimadoFinal;
     private Double rendimentoEstimado;
 

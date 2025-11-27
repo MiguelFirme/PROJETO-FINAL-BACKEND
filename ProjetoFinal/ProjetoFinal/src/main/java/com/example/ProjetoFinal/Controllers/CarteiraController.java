@@ -18,14 +18,12 @@ public class CarteiraController {
         this.carteiraService = carteiraService;
     }
 
-    //Buscar carteira pelo ID do usuário
     @GetMapping("/usuario/{usuarioId}")
     public ResponseEntity<CarteiraResponse> getByUsuario(@PathVariable UUID usuarioId) {
         Carteira carteira = carteiraService.buscarPorUsuarioId(usuarioId);
         return ResponseEntity.ok(new CarteiraResponse(carteira));
     }
 
-    //Buscar carteira pelo ID da carteira
     @GetMapping("/{carteiraId}")
     public ResponseEntity<CarteiraResponse> getById(@PathVariable UUID carteiraId) {
         Carteira carteira = carteiraService.buscarPorId(carteiraId);

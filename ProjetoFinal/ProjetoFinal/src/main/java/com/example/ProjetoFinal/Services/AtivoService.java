@@ -23,7 +23,7 @@ public class AtivoService {
     private String brapiToken;
 
     /**
-     * Busca dados básicos do ativo via /api/quote/{ticker} (retorna o primeiro resultado como Map).
+     Buscar os dados do ativo via prapi
      */
     @SuppressWarnings("unchecked")
     public Map<String, Object> buscarAtivo(String ticker) {
@@ -45,7 +45,7 @@ public class AtivoService {
                     return (Map<String, Object>) first;
                 }
             }
-            // Se a API retornou algo, mas sem resultados válidos
+            // Retorno invalido
             throw new ResourceNotFoundException("Ativo", "ticker", ticker);
         } catch (HttpClientErrorException.NotFound ex) {
             // Se a API retornar 404

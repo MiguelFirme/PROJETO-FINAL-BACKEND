@@ -48,7 +48,7 @@ public class InvestimentoController {
     }
 
 
-    //Criar investimento para um usuário
+    //Criar investimento a partir do arquivo .csv
     @PostMapping("/usuario/{usuarioId}/upload")
     public ResponseEntity<UploadResponse> upload(
             @PathVariable UUID usuarioId,
@@ -58,7 +58,6 @@ public class InvestimentoController {
         return ResponseEntity.ok(response);
     }
 
-    //Criar investimento para um usuário
     @PostMapping("/usuario/{usuarioId}")
     public ResponseEntity<InvestimentoResponse> criar(
             @PathVariable UUID usuarioId,

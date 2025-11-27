@@ -46,24 +46,21 @@ public class UsuarioController {
 
     @PostMapping
     public ResponseEntity<UsuarioResponse> criarUsuario(@Valid @RequestBody UsuarioRequest req) {
-        // 1. Criar e salvar o objeto Usuario a partir do DTO
         Usuario novoUsuario = new Usuario();
         novoUsuario.setNome(req.nome);
         novoUsuario.setEmail(req.email);
-        novoUsuario.setSenha(req.senha); // Em um projeto real, a senha deve ser criptografada
+        novoUsuario.setSenha(req.senha);
 
         Usuario salvo = usuarioRepository.save(novoUsuario);
 
-        // 2. Criar e associar a Carteira
         Carteira carteira = new Carteira();
         carteira.setUsuario(salvo);
         carteira = carteiraRepository.save(carteira);
 
-        // 3. Associar a carteira ao usuário para retorno consistente
+        //Atrelar carteira ao usuário automaticamente
         salvo.setCarteira(carteira);
-        usuarioRepository.save(salvo); // Opcional, mas garante a consistência
+        usuarioRepository.save(salvo);
 
-        // 4. Retornar 201 com Location e o DTO de resposta
         URI location = URI.create("/api/usuarios/" + salvo.getId().toString());
         return ResponseEntity.created(location).body(new UsuarioResponse(salvo));
     }
