@@ -1,13 +1,16 @@
 package com.example.ProjetoFinal.Controllers;
 
 import com.example.ProjetoFinal.DTOs.InvestimentoRequest;
+import com.example.ProjetoFinal.DTOs.InvestimentoResponse;
 import com.example.ProjetoFinal.Entidades.Investimento;
 import com.example.ProjetoFinal.Services.InvestimentoService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/investimentos")
@@ -19,47 +22,51 @@ public class InvestimentoController {
         this.investimentoService = investimentoService;
     }
 
-    // 🔎 Listar investimentos de um usuário
+    //Listar investimentos de um usuário
     @GetMapping("/usuario/{usuarioId}")
-    public ResponseEntity<List<Investimento>> listarPorUsuario(@PathVariable UUID usuarioId) {
-        List<Investimento> lista = investimentoService.listarPorUsuario(usuarioId);
+    public ResponseEntity<List<InvestimentoResponse>> listarPorUsuario(@PathVariable UUID usuarioId) {
+        List<InvestimentoResponse> lista = investimentoService.listarPorUsuario(usuarioId).stream()
+                .map(InvestimentoResponse::new)
+                .collect(Collectors.toList());
         return ResponseEntity.ok(lista);
     }
 
     @GetMapping("/carteira/{carteiraId}")
-    public ResponseEntity<List<Investimento>> listarPorCarteira(@PathVariable UUID carteiraId) {
-        List<Investimento> investimentos = investimentoService.listarPorCarteira(carteiraId);
+    public ResponseEntity<List<InvestimentoResponse>> listarPorCarteira(@PathVariable UUID carteiraId) {
+        List<InvestimentoResponse> investimentos = investimentoService.listarPorCarteira(carteiraId).stream()
+                .map(InvestimentoResponse::new)
+                .collect(Collectors.toList());
         return ResponseEntity.ok(investimentos);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Investimento> buscarPorId(@PathVariable Long id) {
+    public ResponseEntity<InvestimentoResponse> buscarPorId(@PathVariable Long id) {
         Investimento investimento = investimentoService.buscarPorId(id);
-        return ResponseEntity.ok(investimento);
+        return ResponseEntity.ok(new InvestimentoResponse(investimento));
     }
 
 
-    // ➕ Criar investimento para um usuário
+    //Criar investimento para um usuário
     @PostMapping("/usuario/{usuarioId}")
-    public ResponseEntity<Investimento> criar(
+    public ResponseEntity<InvestimentoResponse> criar(
             @PathVariable UUID usuarioId,
-            @RequestBody InvestimentoRequest req) {
+            @Valid @RequestBody InvestimentoRequest req) {
 
         Investimento criado = investimentoService.criarInvestimento(usuarioId, req);
-        return ResponseEntity.ok(criado);
+        return ResponseEntity.ok(new InvestimentoResponse(criado));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Investimento> atualizar(
+    public ResponseEntity<InvestimentoResponse> atualizar(
             @PathVariable Long id,
-            @RequestBody InvestimentoRequest req) {
+            @Valid @RequestBody InvestimentoRequest req) {
 
         Investimento atualizado = investimentoService.atualizar(id, req);
-        return ResponseEntity.ok(atualizado);
+        return ResponseEntity.ok(new InvestimentoResponse(atualizado));
     }
 
 
-    // 🗑️ Deletar investimento
+    //Deletar investimento
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletar(@PathVariable Long id) {
         investimentoService.deletar(id);

@@ -1,5 +1,6 @@
 package com.example.ProjetoFinal.Controllers;
 
+import com.example.ProjetoFinal.DTOs.CarteiraResponse;
 import com.example.ProjetoFinal.Entidades.Carteira;
 import com.example.ProjetoFinal.Services.CarteiraService;
 import org.springframework.http.ResponseEntity;
@@ -17,17 +18,17 @@ public class CarteiraController {
         this.carteiraService = carteiraService;
     }
 
-    // 🔎 Buscar carteira pelo ID do usuário
+    //Buscar carteira pelo ID do usuário
     @GetMapping("/usuario/{usuarioId}")
-    public ResponseEntity<Carteira> getByUsuario(@PathVariable UUID usuarioId) {
+    public ResponseEntity<CarteiraResponse> getByUsuario(@PathVariable UUID usuarioId) {
         Carteira carteira = carteiraService.buscarPorUsuarioId(usuarioId);
-        return ResponseEntity.ok(carteira);
+        return ResponseEntity.ok(new CarteiraResponse(carteira));
     }
 
-    // 🔎 Buscar carteira pelo ID da carteira
+    //Buscar carteira pelo ID da carteira
     @GetMapping("/{carteiraId}")
-    public ResponseEntity<Carteira> getById(@PathVariable UUID carteiraId) {
+    public ResponseEntity<CarteiraResponse> getById(@PathVariable UUID carteiraId) {
         Carteira carteira = carteiraService.buscarPorId(carteiraId);
-        return ResponseEntity.ok(carteira);
+        return ResponseEntity.ok(new CarteiraResponse(carteira));
     }
 }

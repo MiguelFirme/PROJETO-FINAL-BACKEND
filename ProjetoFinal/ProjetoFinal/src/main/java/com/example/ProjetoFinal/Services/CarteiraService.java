@@ -1,6 +1,7 @@
 package com.example.ProjetoFinal.Services;
 
 import com.example.ProjetoFinal.Entidades.Carteira;
+import com.example.ProjetoFinal.Exceptions.ResourceNotFoundException;
 import com.example.ProjetoFinal.Repositorys.CarteiraRepository;
 import org.springframework.stereotype.Service;
 
@@ -17,11 +18,11 @@ public class CarteiraService {
 
     public Carteira buscarPorUsuarioId(UUID usuarioId) {
         return carteiraRepository.findByUsuarioId(usuarioId)
-                .orElseThrow(() -> new RuntimeException("Carteira não encontrada para esse usuário."));
+                .orElseThrow(() -> new ResourceNotFoundException("Carteira", "usuário id", usuarioId));
     }
 
     public Carteira buscarPorId(UUID id) {
         return carteiraRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Carteira não encontrada."));
+                .orElseThrow(() -> new ResourceNotFoundException("Carteira", "id", id));
     }
 }

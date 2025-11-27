@@ -1,7 +1,9 @@
 package com.example.ProjetoFinal.Services;
 
+import com.example.ProjetoFinal.Exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -33,7 +35,9 @@ public class AtivoService {
             }
             String url = builder.build().toUriString();
             Map resp = rest.getForObject(url, Map.class);
-            if (resp == null) return new HashMap<>();
+            if (resp == null) {
+                throw new ResourceNotFoundException("Ativo", "ticker", ticker);
+            }
             Object results = resp.get("results");
             if (results instanceof List && !((List) results).isEmpty()) {
                 Object first = ((List) results).get(0);
@@ -41,9 +45,14 @@ public class AtivoService {
                     return (Map<String, Object>) first;
                 }
             }
-            return new HashMap<>();
+            // Se a API retornou algo, mas sem resultados válidos
+            throw new ResourceNotFoundException("Ativo", "ticker", ticker);
+        } catch (HttpClientErrorException.NotFound ex) {
+            // Se a API retornar 404
+            throw new ResourceNotFoundException("Ativo", "ticker", ticker);
         } catch (Exception e) {
-            return new HashMap<>();
+            // Outros erros de comunicação
+            throw new RuntimeException("Erro ao buscar dados do ativo " + ticker + ": " + e.getMessage(), e);
         }
     }
 
