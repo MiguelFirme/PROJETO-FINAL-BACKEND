@@ -22,9 +22,9 @@ O objetivo principal é criar uma aplicação backend completa, simulando o func
 
 ## ⚙️ Funcionalidades Principais
 
-- Cadastro e autenticação de usuários  
+- Cadastro de usuários  
 - Criação e gerenciamento de carteiras de investimento  
-- Registro de transações (compra, venda, depósito e retirada)  
+- Registro de transações
 - Consulta de ativos com dados reais de mercado obtidos via API externa  
 - Relatórios simples de saldo, rentabilidade e composição da carteira  
 
@@ -33,9 +33,8 @@ O objetivo principal é criar uma aplicação backend completa, simulando o func
 ## 🧩 Tecnologias Utilizadas
 
 - **Linguagem:** Java  
-- **Frontend:** HTML e CSS  
 - **Banco de Dados:** MySQL  
-- **Arquitetura:** CRUD com API RESTful  
+- **Arquitetura:** API RESTful  
 - **Integração Externa:** APIs públicas de cotações (ex: Alpha Vantage, Yahoo Finance)  
 
 ---
