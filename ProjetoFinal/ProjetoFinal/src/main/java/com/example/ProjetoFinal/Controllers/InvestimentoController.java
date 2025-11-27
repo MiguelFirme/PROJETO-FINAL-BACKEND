@@ -3,7 +3,9 @@ package com.example.ProjetoFinal.Controllers;
 import com.example.ProjetoFinal.DTOs.InvestimentoRequest;
 import com.example.ProjetoFinal.DTOs.InvestimentoResponse;
 import com.example.ProjetoFinal.Entidades.Investimento;
+import com.example.ProjetoFinal.DTOs.UploadResponse;
 import com.example.ProjetoFinal.Services.InvestimentoService;
+import org.springframework.web.multipart.MultipartFile;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -45,6 +47,16 @@ public class InvestimentoController {
         return ResponseEntity.ok(new InvestimentoResponse(investimento));
     }
 
+
+    //Criar investimento para um usuário
+    @PostMapping("/usuario/{usuarioId}/upload")
+    public ResponseEntity<UploadResponse> upload(
+            @PathVariable UUID usuarioId,
+            @RequestParam("file") MultipartFile file) {
+
+        UploadResponse response = investimentoService.processarUploadInvestimentos(usuarioId, file);
+        return ResponseEntity.ok(response);
+    }
 
     //Criar investimento para um usuário
     @PostMapping("/usuario/{usuarioId}")

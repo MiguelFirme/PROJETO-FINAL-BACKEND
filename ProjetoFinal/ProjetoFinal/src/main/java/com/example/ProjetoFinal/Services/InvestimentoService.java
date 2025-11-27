@@ -1,6 +1,7 @@
 package com.example.ProjetoFinal.Services;
 
 import com.example.ProjetoFinal.DTOs.InvestimentoRequest;
+import com.example.ProjetoFinal.DTOs.UploadResponse;
 import com.example.ProjetoFinal.Entidades.Carteira;
 import com.example.ProjetoFinal.Entidades.Investimento;
 import com.example.ProjetoFinal.Exceptions.ResourceNotFoundException;
@@ -9,7 +10,11 @@ import com.example.ProjetoFinal.Repositorys.CarteiraRepository;
 import com.example.ProjetoFinal.Repositorys.InvestimentoRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -39,6 +44,68 @@ public class InvestimentoService {
         Carteira carteira = carteiraRepository.findByUsuarioId(usuarioId)
                 .orElseThrow(() -> new ResourceNotFoundException("Carteira", "usuário id", usuarioId));
 
+        return processarNovoInvestimento(carteira, req);
+    }
+
+    @Transactional
+    public UploadResponse processarUploadInvestimentos(UUID usuarioId, MultipartFile file) {
+        Carteira carteira = carteiraRepository.findByUsuarioId(usuarioId)
+                .orElseThrow(() -> new ResourceNotFoundException("Carteira", "usuário id", usuarioId));
+
+        List<String> erros = new ArrayList<>();
+        int sucesso = 0;
+        int totalRegistros = 0;
+
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream()))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                if (line.trim().isEmpty()) continue;
+
+                totalRegistros++;
+                String[] parts = line.split(";");
+
+                if (parts.length != 3) {
+                    erros.add(String.format("Linha %d: Formato inválido. Esperado: TICKER;VALOR;DIAS. Linha: %s", totalRegistros, line));
+                    continue;
+                }
+
+                try {
+                    String ticker = parts[0].trim();
+                    Double valor = Double.parseDouble(parts[1].trim());
+                    Integer dias = Integer.parseInt(parts[2].trim());
+
+                    InvestimentoRequest req = new InvestimentoRequest();
+                    req.ticker = ticker;
+                    req.valor = valor;
+                    req.dias = dias;
+
+                    // Validação básica do DTO
+                    if (ticker.isBlank() || valor <= 0 || dias <= 0) {
+                        erros.add(String.format("Linha %d (%s): Dados inválidos. Ticker, valor e dias devem ser válidos.", totalRegistros, line));
+                        continue;
+                    }
+
+                    processarNovoInvestimento(carteira, req);
+                    sucesso++;
+
+                } catch (NumberFormatException e) {
+                    erros.add(String.format("Linha %d (%s): Valor ou dias não são números válidos.", totalRegistros, line));
+                } catch (ValidationException e) {
+                    erros.add(String.format("Linha %d (%s): Erro de validação: %s", totalRegistros, line, e.getMessage()));
+                } catch (ResourceNotFoundException e) {
+                    erros.add(String.format("Linha %d (%s): Erro de recurso: %s", totalRegistros, line, e.getMessage()));
+                } catch (Exception e) {
+                    erros.add(String.format("Linha %d (%s): Erro inesperado: %s", totalRegistros, line, e.getMessage()));
+                }
+            }
+        } catch (Exception e) {
+            erros.add("Erro ao ler o arquivo: " + e.getMessage());
+        }
+
+        return new UploadResponse(totalRegistros, sucesso, totalRegistros - sucesso, erros);
+    }
+
+    private Investimento processarNovoInvestimento(Carteira carteira, InvestimentoRequest req) {
         String ticker = req.ticker.toUpperCase();
         double valor = req.valor;
         int dias = req.dias;
